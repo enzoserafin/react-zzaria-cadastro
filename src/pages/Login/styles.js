@@ -1,13 +1,8 @@
 import styled from 'styled-components'
 import { Button } from '@material-ui/core'
-import { ReactComponent as MainLogo } from '../../assets/logo-react-zzaria.svg'
 
 export const Container = styled.div`
   padding: ${({ theme }) => theme.spacing(3)}px;
-`
-
-export const Logo = styled(MainLogo)`
-  width: 100%;
 `
 
 export const GitHubButton = styled(Button).attrs({
