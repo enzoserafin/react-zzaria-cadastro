@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { db } from '../services/Firebase'
+import { db } from '../../services/Firebase'
 
 const useCollection = (collection) => {
   const [data, setData] = useState(null)

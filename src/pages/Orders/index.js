@@ -1,67 +1,98 @@
 import {
-  Paper,
+  Subtitle,
+  TableContainer,
+  TableTitle,
+  THead,
+  Th
+} from './styles'
+import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
   TableRow,
   Typography
 } from '@material-ui/core'
 
+import useOrders from '../../hooks/db/orders.js'
+import getHour from '../../utils/getHour'
+
+const allOrderStatus = [
+  {
+    title: 'Pedidos pendentes'
+  },
+  {
+    title: 'Pedidos em produção'
+  },
+  {
+    title: 'Saiu para entrega'
+  },
+  {
+    title: 'Pedidos finalizados'
+  }
+]
+
 const Orders = () => {
-  return (
-    <TableContainer component={Paper}>
+  const { orders } = useOrders()
+
+  console.log('orders:', orders)
+
+  return allOrderStatus.map(orderStatus => (
+    <TableContainer key={orderStatus.title}>
+      <TableTitle>
+        {orderStatus.title}
+      </TableTitle>
       <Table>
-        <TableHead>
+        <THead>
           <TableRow>
-            <TableCell>
+            <Th>
               <Typography>
                 Informações do pedido
               </Typography>
-            </TableCell>
+            </Th>
           </TableRow>
-        </TableHead>
+        </THead>
 
         <TableBody>
-          <TableRow>
-            <TableCell>
-              <div>
-                <Typography variant='button'>
-                  Horário do pedido: 10: 20h
-                </Typography>
-              </div>
+          {orders?.map(order => (
+            <TableRow key={order.id}>
+              <TableCell>
+                <div>
+                  <Subtitle>
+                    Horário do pedido: {getHour(order.createdAt.toDate())}
+                  </Subtitle>
+                </div>
 
-              <div>
-                <Typography variant='button'>
-                  Pedido:
-                </Typography>
-                <ul>
-                  <li>
-                    1 pizza MÉDIA de {' '}
-                    Frango com Catupiry e Calabresa
-                  </li>
-                </ul>
-              </div>
+                <div>
+                  <Subtitle>
+                    Pedido:
+                  </Subtitle>
+                  <ul>
+                    <li>
+                      1 pizza MÉDIA de {' '}
+                      Frango com Catupiry e Calabresa
+                    </li>
+                  </ul>
+                </div>
 
-              <div>
-                <Typography variant='button'>
-                  Endereço de entrega:
-                </Typography>
-                <Typography>
-                  Rua tal, n 92,{' '}
-                  Apto 35<br />
-                  Bairro: Maracanã - CEP: 12345-678<br />
-                  Curitiba / PR
-                </Typography>
-              </div>
-            </TableCell>
-          </TableRow>
+                <div>
+                  <Subtitle>
+                    Endereço de entrega:
+                  </Subtitle>
+                  <Typography>
+                    Rua tal, n 92,{' '}
+                    Apto 35<br />
+                    Bairro: Maracanã - CEP: 12345-678<br />
+                    Curitiba / PR
+                  </Typography>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
 
         </TableBody>
       </Table>
     </TableContainer>
-  )
+  ))
 }
 
 export default Orders
