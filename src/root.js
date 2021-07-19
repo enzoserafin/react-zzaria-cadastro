@@ -8,6 +8,10 @@ import { GlobalStyle } from './global/styles'
 const theme = createMuiTheme({
   typography: {
     useNextVariants: true
+  },
+
+  extend: {
+    drawerWidth: 280
   }
 })
 
