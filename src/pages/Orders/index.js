@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   Subtitle,
   TableContainer,
@@ -15,26 +16,34 @@ import {
 
 import useOrders from '../../hooks/db/orders.js'
 import getHour from '../../utils/getHour'
-
-const allOrderStatus = [
-  {
-    title: 'Pedidos pendentes'
-  },
-  {
-    title: 'Pedidos em produção'
-  },
-  {
-    title: 'Saiu para entrega'
-  },
-  {
-    title: 'Pedidos finalizados'
-  }
-]
+import singularOrPlural from '../../utils/singularOrPlural'
+import ordenator from '../../utils/ordenator'
 
 const Orders = () => {
-  const { orders } = useOrders()
+  const { orders, status } = useOrders()
 
   console.log('orders:', orders)
+
+  const allOrderStatus = useMemo(() => {
+    return [
+      {
+        title: 'Pedidos pendentes',
+        type: status.pending
+      },
+      {
+        title: 'Pedidos em produção',
+        type: status.inProgress
+      },
+      {
+        title: 'Saiu para entrega',
+        type: status.outForDelivery
+      },
+      {
+        title: 'Pedidos finalizados',
+        type: status.delivered
+      }
+    ]
+  }, [status])
 
   return allOrderStatus.map(orderStatus => (
     <TableContainer key={orderStatus.title}>
@@ -53,41 +62,64 @@ const Orders = () => {
         </THead>
 
         <TableBody>
-          {orders?.map(order => (
-            <TableRow key={order.id}>
-              <TableCell>
-                <div>
-                  <Subtitle>
-                    Horário do pedido: {getHour(order.createdAt.toDate())}
-                  </Subtitle>
-                </div>
+          {orders?.[orderStatus.type].map(order => {
+            const {
+              address,
+              number,
+              complement,
+              district,
+              code: cep,
+              city,
+              state
+            } = order.address
 
-                <div>
-                  <Subtitle>
-                    Pedido:
-                  </Subtitle>
-                  <ul>
-                    <li>
-                      1 pizza MÉDIA de {' '}
-                      Frango com Catupiry e Calabresa
-                    </li>
-                  </ul>
-                </div>
+            return (
+              <TableRow key={order.id}>
+                <TableCell>
+                  <div>
+                    <Subtitle>
+                      Horário do pedido: {getHour(order.createdAt.toDate())}
+                    </Subtitle>
+                  </div>
 
-                <div>
-                  <Subtitle>
-                    Endereço de entrega:
-                  </Subtitle>
-                  <Typography>
-                    Rua tal, n 92,{' '}
-                    Apto 35<br />
-                    Bairro: Maracanã - CEP: 12345-678<br />
-                    Curitiba / PR
-                  </Typography>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                  <div>
+                    <Subtitle>
+                      Pedido:
+                    </Subtitle>
+                    <ul>
+                      {order.pizzas.map((pizza, index) => (
+                        <li key={index}>
+                          <Typography>
+                            {pizza.quantity} {' '}
+                            {singularOrPlural(
+                              pizza.quantity, 'pizza', 'pizzas'
+                            )} {' '}
+                            {pizza.size.name.toUpperCase()} de {' '}
+                            {ordenator(pizza.flavours
+                              .map(flavour => flavour.name)
+                            )
+                            }
+                          </Typography>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <Subtitle>
+                      Endereço de entrega:
+                    </Subtitle>
+                    <Typography>
+                      {address}, {number && number},{' '} { }
+                      {complement && complement}<br />
+                      Bairro: {district} - CEP: {cep}<br />
+                      {city} / {state}
+                    </Typography>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )
+          })}
 
         </TableBody>
       </Table>
