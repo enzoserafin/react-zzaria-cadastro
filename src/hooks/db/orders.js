@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { db } from '../../services/Firebase'
 
 const useOrders = () => {
@@ -10,6 +10,11 @@ const useOrders = () => {
     outForDelivery: 'outForDelivery',
     delivered: 'delivered'
   }), [])
+
+  const updateOrder = useCallback(({ orderId, status }) => {
+    console.log('orderId: ', orderId)
+    console.log('status: ', status)
+  }, [])
 
   useEffect(() => {
     db.collection('orders').get().then(querySnapshot => {
@@ -42,7 +47,7 @@ const useOrders = () => {
     })
   }, [status])
 
-  return { orders, status }
+  return { orders, status, updateOrder }
 }
 
 export default useOrders
