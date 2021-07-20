@@ -21,12 +21,6 @@ export const TableTitle = styled(Typography).attrs({
   padding: ${({ theme }) => theme.spacing(3)}px;
 `
 
-export const Subtitle = styled(Typography).attrs({
-  variant: 'button'
-})`
-font-weight: bold;
-`
-
 export const THead = styled(TableHead)`
   && {
     background: ${({ theme }) => theme.palette.common.black};
