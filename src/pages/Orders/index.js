@@ -22,7 +22,7 @@ import singularOrPlural from '../../utils/singularOrPlural'
 import ordenator from '../../utils/ordenator'
 
 const Orders = () => {
-  const { orders, status } = useOrders()
+  const { orders, status, updateOrder } = useOrders()
 
   console.log('orders:', orders)
 
@@ -149,7 +149,10 @@ const Orders = () => {
                     <Fab
                       color='primary'
                       title={'Mudar status para ' + orderStatus.nextButtonTitle}
-                      onClick={() => console.log('mudou')}
+                      onClick={() => updateOrder({
+                        orderId: order.id,
+                        status: orderStatus.nextAction
+                      })}
                     >
                       <orderStatus.icon />
                     </Fab>

@@ -11,13 +11,8 @@ const useOrders = () => {
     delivered: 'delivered'
   }), [])
 
-  const updateOrder = useCallback(({ orderId, status }) => {
-    console.log('orderId: ', orderId)
-    console.log('status: ', status)
-  }, [])
-
-  useEffect(() => {
-    db.collection('orders').get().then(querySnapshot => {
+  const getOrders = useCallback(() => {
+    db.collection('orders').orderBy('createdAt', 'asc').get().then(querySnapshot => {
       const docs = []
 
       querySnapshot.forEach(doc => {
@@ -46,6 +41,15 @@ const useOrders = () => {
       )
     })
   }, [status])
+
+  const updateOrder = useCallback(async ({ orderId, status }) => {
+    await db.collection('orders').doc(orderId).set({ status }, { merge: true })
+    getOrders()
+  }, [getOrders])
+
+  useEffect(() => {
+    getOrders()
+  }, [getOrders])
 
   return { orders, status, updateOrder }
 }
