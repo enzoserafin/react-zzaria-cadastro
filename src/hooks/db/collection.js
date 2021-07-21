@@ -34,11 +34,19 @@ const useCollection = (collection) => {
     fetchColletionData()
   }, [collection, fetchColletionData])
 
+  const edit = useCallback(async (size) => {
+    console.log('Edit', size)
+    // await db.collection(collection).doc(size.id).set({
+
+    // })
+    fetchColletionData()
+  }, [collection, fetchColletionData])
+
   useEffect(() => {
     fetchColletionData()
   }, [pathname, fetchColletionData])
 
-  return { data, add, remove }
+  return { data, add, remove, edit }
 }
 
 export default useCollection

@@ -1,5 +1,5 @@
 import { Link, useRouteMatch } from 'react-router-dom'
-import { PIZZAS_SIZES, NEW } from '../../../../routes'
+import { PIZZAS_SIZES, NEW, EDIT } from '../../../../routes'
 import {
   Button,
   TableContainer,
@@ -66,7 +66,11 @@ const TablePizzasSizes = () => {
               </TableCell>
 
               <TableCell align='right'>
-                <Button startIcon={<Edit />}>
+                <Button
+                  startIcon={<Edit />}
+                  component={Link}
+                  to={PIZZAS_SIZES + EDIT(pizza.id)}
+                >
                   Editar
                 </Button>
 

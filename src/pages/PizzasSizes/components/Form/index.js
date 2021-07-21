@@ -1,14 +1,28 @@
-import { useCallback } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useEffect, useCallback, useReducer } from 'react'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { PIZZAS_SIZES } from '../../../../routes'
 import { Container, Form } from './styles'
 import { Button, Grid, Typography } from '@material-ui/core'
 import TextField from '../../../../components/TextField'
-import useCollection from '../../../../hooks/db/collection'
+import usePizzaSize, { initialState } from '../../../../hooks/pizzaSize'
 
 const FormRegisterSize = () => {
-  const { add } = useCollection('pizzasSizes')
+  const { id } = useParams()
+  const { pizza, add } = usePizzaSize(id)
+  const [pizzaEditable, dispatch] = useReducer(reducer, initialState)
+  console.log('pizza para editar:', pizzaEditable)
   const history = useHistory()
+
+  useEffect(() => {
+    dispatch({
+      type: 'EDIT',
+      payload: pizza
+    })
+  }, [pizza])
+
+  const handleChange = useCallback((e) => {
+    console.log(e)
+  }, [])
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
@@ -36,19 +50,27 @@ const FormRegisterSize = () => {
         <TextField
           label='Nome para esse tamanho. Ex: Pequena'
           name='name'
+          value={pizzaEditable.name}
+          onChanged={handleChange}
         />
 
         <TextField
           label='Diâmetro da pizza em cm'
           name='size'
+          value={pizzaEditable.size}
+          onChanged={handleChange}
         />
         <TextField
           label='Quantidade de fatias'
           name='slices'
+          value={pizzaEditable.slices}
+          onChanged={handleChange}
         />
         <TextField
           label='Quantidade de sabores'
           name='flavours'
+          value={pizzaEditable.flavours}
+          onChanged={handleChange}
         />
         <Grid item container justify='flex-end' spacing={2}>
           <Grid item>
@@ -69,6 +91,13 @@ const FormRegisterSize = () => {
       </Form>
     </Container>
   )
+}
+
+function reducer(state, action) {
+  if (action.type === 'EDIT') {
+    return action.payload
+  }
+  return state
 }
 
 export default FormRegisterSize
