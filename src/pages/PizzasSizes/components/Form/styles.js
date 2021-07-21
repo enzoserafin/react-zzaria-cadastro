@@ -9,3 +9,11 @@ export const Container = styled(Grid).attrs({
     margin-bottom: ${({ theme }) => theme.spacing(5)}px;
   }
 `
+
+export const Form = styled(Grid).attrs({
+  item: true,
+  container: true,
+  xs: 12,
+  spacing: 2,
+  component: 'form'
+})``

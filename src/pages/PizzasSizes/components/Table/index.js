@@ -20,7 +20,7 @@ import useCollection from '../../../../hooks/db/collection'
 import singularOrPlural from '../../../../utils/singularOrPlural'
 
 const TablePizzasSizes = () => {
-  const pizzasSizes = useCollection('pizzasSizes')
+  const { data: pizzasSizes } = useCollection('pizzasSizes')
   const newSizePath = useRouteMatch(`${PIZZAS_SIZES}${NEW}`)
 
   return (
