@@ -20,7 +20,7 @@ import useCollection from '../../../../hooks/db/collection'
 import singularOrPlural from '../../../../utils/singularOrPlural'
 
 const TablePizzasSizes = () => {
-  const { data: pizzasSizes } = useCollection('pizzasSizes')
+  const { data: pizzasSizes, remove } = useCollection('pizzasSizes')
   const newSizePath = useRouteMatch(`${PIZZAS_SIZES}${NEW}`)
 
   return (
@@ -70,7 +70,11 @@ const TablePizzasSizes = () => {
                   Editar
                 </Button>
 
-                <Button color='secondary' startIcon={<Delete />}>
+                <Button
+                  color='secondary'
+                  startIcon={<Delete />}
+                  onClick={() => remove(pizza.id)}
+                >
                   Remover
                 </Button>
               </TableCell>

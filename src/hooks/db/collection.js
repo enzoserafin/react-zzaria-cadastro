@@ -8,12 +8,7 @@ const useCollection = (collection) => {
   const { pathname } = useLocation()
   const mounted = useMounted()
 
-  const add = useCallback((data) => {
-    console.log('data add new', data)
-    return db.collection(collection).add(data)
-  }, [collection])
-
-  useEffect(() => {
+  const fetchColletionData = useCallback(() => {
     db.collection(collection).get().then(querySnapshot => {
       const docs = []
       querySnapshot.forEach(doc => {
@@ -26,9 +21,24 @@ const useCollection = (collection) => {
         setData(docs)
       }
     })
-  }, [collection, pathname, mounted])
+  }, [collection, mounted])
 
-  return { data, add }
+  const add = useCallback((data) => {
+    console.log('data add new', data)
+    return db.collection(collection).add(data)
+  }, [collection])
+
+  const remove = useCallback(async (id) => {
+    console.log('data remove', id)
+    await db.collection(collection).doc(id).delete()
+    fetchColletionData()
+  }, [collection, fetchColletionData])
+
+  useEffect(() => {
+    fetchColletionData()
+  }, [pathname, fetchColletionData])
+
+  return { data, add, remove }
 }
 
 export default useCollection
