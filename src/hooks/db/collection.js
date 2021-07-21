@@ -1,8 +1,12 @@
 import { useEffect, useCallback, useState } from 'react'
+import useMounted from '../mounted'
+import { useLocation } from 'react-router-dom'
 import { db } from '../../services/Firebase'
 
 const useCollection = (collection) => {
   const [data, setData] = useState(null)
+  const { pathname } = useLocation()
+  const mounted = useMounted()
 
   const add = useCallback((data) => {
     console.log('data add new', data)
@@ -10,7 +14,6 @@ const useCollection = (collection) => {
   }, [collection])
 
   useEffect(() => {
-    let mounted = true
     db.collection(collection).get().then(querySnapshot => {
       const docs = []
       querySnapshot.forEach(doc => {
@@ -19,14 +22,11 @@ const useCollection = (collection) => {
           ...doc.data()
         })
       })
-      if (mounted) {
+      if (mounted.current) {
         setData(docs)
       }
     })
-    return () => {
-      mounted = false
-    }
-  }, [collection])
+  }, [collection, pathname, mounted])
 
   return { data, add }
 }

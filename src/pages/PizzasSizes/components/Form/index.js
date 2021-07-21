@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { PIZZAS_SIZES } from '../../../../routes'
 import { Container, Form } from './styles'
 import { Button, Grid, Typography } from '@material-ui/core'
@@ -8,8 +8,9 @@ import useCollection from '../../../../hooks/db/collection'
 
 const FormRegisterSize = () => {
   const { add } = useCollection('pizzasSizes')
+  const history = useHistory()
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
     const { name, size, slices, flavours } = e.target.elements
 
@@ -19,8 +20,9 @@ const FormRegisterSize = () => {
       slices: +slices.value,
       flavours: +flavours.value
     }
-    add(normalizedData)
-  }, [add])
+    await add(normalizedData)
+    history.push(PIZZAS_SIZES)
+  }, [add, history])
 
   return (
     <Container >

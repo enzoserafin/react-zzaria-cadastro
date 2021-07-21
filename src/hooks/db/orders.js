@@ -1,8 +1,10 @@
 import { useEffect, useState, useMemo, useCallback } from 'react'
+import useMounted from '../mounted'
 import { db } from '../../services/Firebase'
 
 const useOrders = () => {
   const [orders, setOrders] = useState(null)
+  const mounted = useMounted()
 
   const status = useMemo(() => ({
     pending: 'pending',
@@ -29,6 +31,10 @@ const useOrders = () => {
         }
       }, {})
 
+      if (!mounted.current) {
+        return
+      }
+
       setOrders(docs.reduce((acc, doc) => {
         const mainStatus = doc.status || status.pending
 
@@ -40,7 +46,7 @@ const useOrders = () => {
       }, initialStatus)
       )
     })
-  }, [status])
+  }, [status, mounted])
 
   const updateOrder = useCallback(async ({ orderId, status }) => {
     await db.collection('orders').doc(orderId).set({ status }, { merge: true })
