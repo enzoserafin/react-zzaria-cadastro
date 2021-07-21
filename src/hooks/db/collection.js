@@ -34,12 +34,9 @@ const useCollection = (collection) => {
     fetchColletionData()
   }, [collection, fetchColletionData])
 
-  const edit = useCallback(async (size) => {
-    console.log('Edit', size)
-    // await db.collection(collection).doc(size.id).set({
-
-    // })
-    fetchColletionData()
+  const edit = useCallback((id, data) => {
+    console.log('Edit', id, data)
+    return db.collection(collection).doc(id).set(data)
   }, [collection, fetchColletionData])
 
   useEffect(() => {

@@ -9,13 +9,13 @@ export const initialState = {
 }
 
 function usePizzaSize(id) {
-  const { data, add } = useCollection('pizzasSizes')
+  const { data, add, edit } = useCollection('pizzasSizes')
   const [pizza, setPizza] = useState(initialState)
 
   useEffect(() => {
     setPizza(data?.find(p => p.id === id) || initialState)
   }, [data, id])
-  return { pizza, add }
+  return { pizza, add, edit }
 }
 
 export default usePizzaSize

@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useReducer } from 'react'
+import { useEffect, useCallback, useReducer, useRef } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { PIZZAS_SIZES } from '../../../../routes'
 import { Container, Form } from './styles'
@@ -8,10 +8,15 @@ import usePizzaSize, { initialState } from '../../../../hooks/pizzaSize'
 
 const FormRegisterSize = () => {
   const { id } = useParams()
-  const { pizza, add } = usePizzaSize(id)
+  const { pizza, add, edit } = usePizzaSize(id)
   const [pizzaEditable, dispatch] = useReducer(reducer, initialState)
   console.log('pizza para editar:', pizzaEditable)
   const history = useHistory()
+  const nameField = useRef()
+
+  useEffect(() => {
+    nameField.current.focus()
+  }, [id])
 
   useEffect(() => {
     dispatch({
@@ -21,22 +26,33 @@ const FormRegisterSize = () => {
   }, [pizza])
 
   const handleChange = useCallback((e) => {
-    console.log(e)
+    const { name, value } = e.target
+    dispatch({
+      type: 'UPDATE_FIELD',
+      payload: {
+        [name]: value
+      }
+    })
   }, [])
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault()
-    const { name, size, slices, flavours } = e.target.elements
+    const { name, size, slices, flavours } = pizzaEditable
 
     const normalizedData = {
-      name: name.value,
-      size: +size.value,
-      slices: +slices.value,
-      flavours: +flavours.value
+      name,
+      size: +size,
+      slices: +slices,
+      flavours: +flavours
     }
-    await add(normalizedData)
+    if (id) {
+      await edit(id, normalizedData)
+    } else {
+      await add(normalizedData)
+    }
+
     history.push(PIZZAS_SIZES)
-  }, [add, history])
+  }, [add, edit, history, pizzaEditable])
 
   return (
     <Container >
@@ -52,6 +68,7 @@ const FormRegisterSize = () => {
           name='name'
           value={pizzaEditable.name}
           onChanged={handleChange}
+          inputRef={nameField}
         />
 
         <TextField
@@ -96,6 +113,13 @@ const FormRegisterSize = () => {
 function reducer(state, action) {
   if (action.type === 'EDIT') {
     return action.payload
+  }
+
+  if (action.type === 'UPDATE_FIELD') {
+    return {
+      ...state,
+      ...action.payload
+    }
   }
   return state
 }
