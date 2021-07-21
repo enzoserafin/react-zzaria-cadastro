@@ -1,15 +1,19 @@
 import {
+  Button,
   TableContainer,
   TableTitle,
+  TitleContainer,
   THead,
   Th
 } from './styles'
 import {
+  Grid,
   Table,
   TableBody,
   TableRow,
   TableCell
 } from '@material-ui/core'
+import { Add, Edit, Delete } from '@material-ui/icons'
 import useCollection from '../../../../hooks/db/collection'
 import singularOrPlural from '../../../../utils/singularOrPlural'
 
@@ -18,9 +22,18 @@ const TablePizzasSizes = () => {
 
   return (
     <TableContainer>
-      <TableTitle>
-        Tamanhos cadastrados
-      </TableTitle>
+      <TitleContainer>
+        <Grid item>
+          <TableTitle>
+            Tamanhos cadastrados
+          </TableTitle>
+        </Grid>
+        <Grid item>
+          <Button color='primary' startIcon={<Add />}>
+            Adicionar novo tamanho
+          </Button>
+        </Grid>
+      </TitleContainer>
 
       <Table>
         <THead>
@@ -29,6 +42,7 @@ const TablePizzasSizes = () => {
             <Th>Diâmetro</Th>
             <Th>Fatias</Th>
             <Th>Sabores</Th>
+            <Th />
           </TableRow>
         </THead>
         <TableBody>
@@ -39,7 +53,18 @@ const TablePizzasSizes = () => {
               <TableCell>{pizza.slices} fatias</TableCell>
               <TableCell>
                 {pizza.flavours} {' '}
-                {singularOrPlural(pizza.flavours, 'sabor', 'sabores')}</TableCell>
+                {singularOrPlural(pizza.flavours, 'sabor', 'sabores')}
+              </TableCell>
+
+              <TableCell align='right'>
+                <Button startIcon={<Edit />}>
+                  Editar
+                </Button>
+
+                <Button color='secondary' startIcon={<Delete />}>
+                  Remover
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
