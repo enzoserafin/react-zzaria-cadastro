@@ -1,3 +1,5 @@
+import { Link, useRouteMatch } from 'react-router-dom'
+import { PIZZAS_SIZES, NEW } from '../../../../routes'
 import {
   Button,
   TableContainer,
@@ -19,6 +21,7 @@ import singularOrPlural from '../../../../utils/singularOrPlural'
 
 const TablePizzasSizes = () => {
   const pizzasSizes = useCollection('pizzasSizes')
+  const newSizePath = useRouteMatch(`${PIZZAS_SIZES}${NEW}`)
 
   return (
     <TableContainer>
@@ -29,7 +32,13 @@ const TablePizzasSizes = () => {
           </TableTitle>
         </Grid>
         <Grid item>
-          <Button color='primary' startIcon={<Add />}>
+          <Button
+            color='primary'
+            startIcon={<Add />}
+            component={Link}
+            to={`${PIZZAS_SIZES}${NEW}`}
+            disabled={!!newSizePath}
+          >
             Adicionar novo tamanho
           </Button>
         </Grid>
