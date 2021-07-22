@@ -20,12 +20,14 @@ import {
   TableCell
 } from '@material-ui/core'
 import { Add, Edit, Delete } from '@material-ui/icons'
-// import useCollection from '../../../../hooks/db/collection'
+import useCollection from '../../../../hooks/db/collection'
+import getPizzasImg from '../../../../utils/getPizzasImg'
 // import singularOrPlural from '../../../../utils/singularOrPlural'
 
 const TablePizzasFlavours = () => {
-  // const { data: pizzasSizes, remove } = useCollection('pizzasSizes')
+  const { data: pizzasFlavours, remove } = useCollection('pizzasFlavours')
   const newFlavourPath = useRouteMatch(`${PIZZAS_FLAVOURS}${NEW}`)
+  console.log(pizzasFlavours)
 
   return (
     <TableContainer>
@@ -58,47 +60,44 @@ const TablePizzasFlavours = () => {
           </TableRow>
         </THead>
         <TableBody>
-          <TableRow >
-            <TableCell>
-              <img
-                src=''
-                alt=''
-                style={{
-                  background: '#fc0',
-                  display: 'block',
-                  height: '50px',
-                  width: '50px'
-                }}
-              />
-            </TableCell>
+          {pizzasFlavours?.map(pizza => (
+            <TableRow key={pizza.id}>
+              <TableCell>
+                <img
+                  src={getPizzasImg(pizza.image)}
+                  alt={pizza.name}
+                  width='50'
+                />
+              </TableCell>
 
-            <TableCell>Sabor da pizza</TableCell>
-            <TableCell>
-              <List>
-                <ListItem name='Broto' value={10} />
-                <ListItem name='Pequena' value={20} />
-                <ListItem name='Grande' value={30} />
-              </List>
-            </TableCell>
+              <TableCell>{pizza.name}</TableCell>
+              <TableCell>
+                <List>
+                  <ListItem name='Broto' value={10} />
+                  <ListItem name='Pequena' value={20} />
+                  <ListItem name='Grande' value={30} />
+                </List>
+              </TableCell>
 
-            <TableCell align='right'>
-              <Button
-                startIcon={<Edit />}
-                component={Link}
-                to={PIZZAS_FLAVOURS + EDIT(1)}
-              >
-                Editar
-              </Button>
+              <TableCell align='right'>
+                <Button
+                  startIcon={<Edit />}
+                  component={Link}
+                  to={PIZZAS_FLAVOURS + EDIT(pizza.id)}
+                >
+                  Editar
+                </Button>
 
-              <Button
-                color='secondary'
-                startIcon={<Delete />}
-                onClick={() => { }}
-              >
-                Remover
-              </Button>
-            </TableCell>
-          </TableRow>
+                <Button
+                  color='secondary'
+                  startIcon={<Delete />}
+                  onClick={() => remove(pizza.id)}
+                >
+                  Remover
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
