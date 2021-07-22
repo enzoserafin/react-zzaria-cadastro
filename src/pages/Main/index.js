@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 import { Switch, Route, Link, useLocation } from 'react-router-dom'
 import { Content, Drawer, DrawerContent } from './styles'
 import {
@@ -33,7 +33,15 @@ const menuItens = [
   }
 ]
 
+function useScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+}
+
 const Main = () => {
+  useScrollToTop()
   const { pathname } = useLocation()
 
   return (
