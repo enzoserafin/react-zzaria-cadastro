@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useReducer, useRef } from 'react'
+import { useEffect, useCallback, useReducer, useRef, useMemo } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { PIZZAS_SIZES } from '../../../../routes'
 import { Container, Form } from './styles'
@@ -13,6 +13,11 @@ const FormRegisterSize = () => {
   console.log('pizza para editar:', pizzaEditable)
   const history = useHistory()
   const nameField = useRef()
+
+  const texts = useMemo(() => ({
+    title: id ? 'Editar tamanho' : 'Cadastrar novo tamanho',
+    button: id ? 'Salvar' : 'Cadastrar'
+  }), [id])
 
   useEffect(() => {
     nameField.current.focus()
@@ -58,7 +63,7 @@ const FormRegisterSize = () => {
     <Container >
       <Grid item xs={12}>
         <Typography variant='h4'>
-          Cadastrar novo tamanho
+          {texts.title}
         </Typography>
       </Grid>
 
@@ -101,7 +106,7 @@ const FormRegisterSize = () => {
           </Grid>
           <Grid item>
             <Button variant='contained' color='primary' type='submit'>
-              Cadastrar
+              {texts.button}
             </Button>
           </Grid>
         </Grid>

@@ -1,6 +1,6 @@
-import { createContext, useCallback, useState } from 'react'
+import { createContext, useCallback, useState, useEffect } from 'react'
 import t from 'prop-types'
-import firebase from '../services/Firebase'
+import firebase, { db } from '../services/Firebase'
 
 const AuthContext = createContext()
 
@@ -9,6 +9,23 @@ const AuthProvider = ({ children }) => {
     isUserLoggedIn: false,
     user: null
   })
+
+  useEffect(() => {
+    console.log('dados do usuário:', userInfo.user)
+    const uid = userInfo.user?.uid || 'EMPTY'
+    db.collection('users').doc(uid).get().then(doc => {
+      console.log('existe?', doc.exists, uid)
+      if (doc.exists || uid === 'EMPTY') {
+        return
+      }
+
+      db.collection('users').doc(uid).set({
+        email: userInfo.user.email,
+        name: userInfo.user.displayName,
+        role: 'user'
+      })
+    })
+  }, [userInfo])
 
   const login = useCallback(() => {
     const provider = new firebase.auth.GithubAuthProvider()
