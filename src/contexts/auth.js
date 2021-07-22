@@ -11,10 +11,8 @@ const AuthProvider = ({ children }) => {
   })
 
   useEffect(() => {
-    console.log('dados do usuário:', userInfo.user)
     const uid = userInfo.user?.uid || 'EMPTY'
     db.collection('users').doc(uid).get().then(doc => {
-      console.log('existe?', doc.exists, uid)
       if (doc.exists || uid === 'EMPTY') {
         return
       }

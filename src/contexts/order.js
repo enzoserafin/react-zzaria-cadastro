@@ -22,8 +22,6 @@ const OrderProvider = ({ children }) => {
   }
 
   async function sendOrder() {
-    console.log('send order')
-
     try {
       await db.collection('orders').add({
         userId: userInfo.user.uid,

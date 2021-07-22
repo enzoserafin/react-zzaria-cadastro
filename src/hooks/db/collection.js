@@ -24,18 +24,15 @@ const useCollection = (collection) => {
   }, [collection, mounted])
 
   const add = useCallback((data) => {
-    console.log('data add new', data)
     return db.collection(collection).add(data)
   }, [collection])
 
   const remove = useCallback(async (id) => {
-    console.log('data remove', id)
     await db.collection(collection).doc(id).delete()
     fetchColletionData()
   }, [collection, fetchColletionData])
 
   const edit = useCallback((id, data) => {
-    console.log('Edit', id, data)
     return db.collection(collection).doc(id).set(data)
   }, [collection, fetchColletionData])
 

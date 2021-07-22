@@ -20,8 +20,6 @@ const FormAddress = ({ onUpdate = () => { } }) => {
         return
       }
 
-      console.log('buscar cep:', cep)
-
       setFetchingCep(true)
       const data = await fetch(`https://ws.apicep.com/cep/${cep}.json`)
       setFetchingCep(false)
@@ -33,7 +31,6 @@ const FormAddress = ({ onUpdate = () => { } }) => {
       }
 
       const result = await data.json()
-      console.log(result)
 
       if (!result.ok) {
         dispatch({
@@ -135,7 +132,6 @@ FormAddress.propTypes = {
 }
 
 function reducer(state, action) {
-  console.log('action:', action)
   if (action.type === 'UPDATE_FULL_ADDRESS') {
     return {
       ...state,

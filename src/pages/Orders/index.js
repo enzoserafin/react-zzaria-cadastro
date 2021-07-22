@@ -24,8 +24,6 @@ import ordenator from '../../utils/ordenator'
 const Orders = () => {
   const { orders, status, updateOrder } = useOrders()
 
-  console.log('orders:', orders)
-
   const allOrderStatus = useMemo(() => {
     return [
       {
