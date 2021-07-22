@@ -1,21 +1,21 @@
-import { useEffect, useCallback, useReducer, useRef, useMemo } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom'
-import { PIZZAS_SIZES } from '../../../../routes'
+import { useEffect, /* useCallback, useReducer, */ useRef, useMemo } from 'react'
+import { Link, /* useHistory, */ useParams } from 'react-router-dom'
+import { PIZZAS_FLAVOURS } from '../../../../routes'
 import { Container, Form } from './styles'
 import { Button, Grid, Typography } from '@material-ui/core'
 import TextField from '../../../../components/TextField'
-import usePizzaSize, { initialState } from '../../../../hooks/pizzaSize'
+// import usePizzaSize, { initialState } from '../../../../hooks/pizzaSize'
 
 const FormRegisterFlavour = () => {
   const { id } = useParams()
-  const { pizza, add, edit } = usePizzaSize(id)
-  const [pizzaEditable, dispatch] = useReducer(reducer, initialState)
-  console.log('pizza para editar:', pizzaEditable)
-  const history = useHistory()
+  // const { pizza, add, edit } = usePizzaSize(id)
+  // const [pizzaEditable, dispatch] = useReducer(reducer, initialState)
+  // console.log('pizza para editar:', pizzaEditable)
+  // const history = useHistory()
   const nameField = useRef()
 
   const texts = useMemo(() => ({
-    title: id ? 'Editar tamanho' : 'Cadastrar novo tamanho',
+    title: id ? 'Editar sabor' : 'Cadastrar novo sabor',
     button: id ? 'Salvar' : 'Cadastrar'
   }), [id])
 
@@ -23,41 +23,41 @@ const FormRegisterFlavour = () => {
     nameField.current.focus()
   }, [id])
 
-  useEffect(() => {
-    dispatch({
-      type: 'EDIT',
-      payload: pizza
-    })
-  }, [pizza])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'EDIT',
+  //     payload: pizza
+  //   })
+  // }, [pizza])
 
-  const handleChange = useCallback((e) => {
-    const { name, value } = e.target
-    dispatch({
-      type: 'UPDATE_FIELD',
-      payload: {
-        [name]: value
-      }
-    })
-  }, [])
+  // const handleChange = useCallback((e) => {
+  //   const { name, value } = e.target
+  //   dispatch({
+  //     type: 'UPDATE_FIELD',
+  //     payload: {
+  //       [name]: value
+  //     }
+  //   })
+  // }, [])
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault()
-    const { name, size, slices, flavours } = pizzaEditable
+  // const handleSubmit = useCallback(async (e) => {
+  //   e.preventDefault()
+  //   const { name, size, slices, flavours } = pizzaEditable
 
-    const normalizedData = {
-      name,
-      size: +size,
-      slices: +slices,
-      flavours: +flavours
-    }
-    if (id) {
-      await edit(id, normalizedData)
-    } else {
-      await add(normalizedData)
-    }
+  //   const normalizedData = {
+  //     name,
+  //     size: +size,
+  //     slices: +slices,
+  //     flavours: +flavours
+  //   }
+  //   if (id) {
+  //     await edit(id, normalizedData)
+  //   } else {
+  //     await add(normalizedData)
+  //   }
 
-    history.push(PIZZAS_SIZES)
-  }, [add, edit, history, pizzaEditable])
+  //   history.push(PIZZAS_SIZES)
+  // }, [add, edit, history, pizzaEditable])
 
   return (
     <Container >
@@ -67,16 +67,16 @@ const FormRegisterFlavour = () => {
         </Typography>
       </Grid>
 
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <TextField
-          label='Nome para esse tamanho. Ex: Pequena'
+          label='Nome do sabor'
           name='name'
-          value={pizzaEditable.name}
-          onChanged={handleChange}
+          // value={pizzaEditable.name}
+          // onChanged={handleChange}
           inputRef={nameField}
         />
 
-        <TextField
+        {/* <TextField
           label='Diâmetro da pizza em cm'
           name='size'
           value={pizzaEditable.size}
@@ -93,13 +93,13 @@ const FormRegisterFlavour = () => {
           name='flavours'
           value={pizzaEditable.flavours}
           onChanged={handleChange}
-        />
+        /> */}
         <Grid item container justify='flex-end' spacing={2}>
           <Grid item>
             <Button
               variant='contained'
               component={Link}
-              to={PIZZAS_SIZES}
+              to={PIZZAS_FLAVOURS}
             >
               Cancelar
             </Button>
@@ -115,18 +115,18 @@ const FormRegisterFlavour = () => {
   )
 }
 
-function reducer(state, action) {
-  if (action.type === 'EDIT') {
-    return action.payload
-  }
+// function reducer(state, action) {
+//   if (action.type === 'EDIT') {
+//     return action.payload
+//   }
 
-  if (action.type === 'UPDATE_FIELD') {
-    return {
-      ...state,
-      ...action.payload
-    }
-  }
-  return state
-}
+//   if (action.type === 'UPDATE_FIELD') {
+//     return {
+//       ...state,
+//       ...action.payload
+//     }
+//   }
+//   return state
+// }
 
 export default FormRegisterFlavour
