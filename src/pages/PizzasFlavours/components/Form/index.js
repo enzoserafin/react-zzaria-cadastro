@@ -1,8 +1,8 @@
-import { useEffect, /* useCallback, useReducer, */ useRef, useMemo } from 'react'
+import { useEffect, useCallback, /* useReducer, */ useRef, useMemo } from 'react'
 import { Link, /* useHistory, */ useParams } from 'react-router-dom'
 import { PIZZAS_FLAVOURS } from '../../../../routes'
 import { Container, Form } from './styles'
-import { Button, Grid, Typography } from '@material-ui/core'
+import { Button, Grid, InputLabel, Typography } from '@material-ui/core'
 import TextField from '../../../../components/TextField'
 // import usePizzaSize, { initialState } from '../../../../hooks/pizzaSize'
 
@@ -40,24 +40,21 @@ const FormRegisterFlavour = () => {
   //   })
   // }, [])
 
-  // const handleSubmit = useCallback(async (e) => {
-  //   e.preventDefault()
-  //   const { name, size, slices, flavours } = pizzaEditable
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault()
+    const { name, image } = e.target.elements
 
-  //   const normalizedData = {
-  //     name,
-  //     size: +size,
-  //     slices: +slices,
-  //     flavours: +flavours
-  //   }
-  //   if (id) {
-  //     await edit(id, normalizedData)
-  //   } else {
-  //     await add(normalizedData)
-  //   }
-
-  //   history.push(PIZZAS_SIZES)
-  // }, [add, edit, history, pizzaEditable])
+    const normalizedDate = {
+      name: name.value,
+      image: image.value,
+      value: {
+        0: 10,
+        1: 20,
+        2: 30
+      }
+    }
+    console.log(normalizedDate)
+  }, [])
 
   return (
     <Container >
@@ -67,7 +64,7 @@ const FormRegisterFlavour = () => {
         </Typography>
       </Grid>
 
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <TextField
           label='Nome do sabor'
           name='name'
@@ -76,24 +73,36 @@ const FormRegisterFlavour = () => {
           inputRef={nameField}
         />
 
-        {/* <TextField
-          label='Diâmetro da pizza em cm'
-          name='size'
-          value={pizzaEditable.size}
-          onChanged={handleChange}
-        />
         <TextField
-          label='Quantidade de fatias'
-          name='slices'
-          value={pizzaEditable.slices}
-          onChanged={handleChange}
+          label='Link para imagem desse sabor'
+          name='image'
+          // value={pizzaEditable.name}
+          // onChanged={handleChange}
+          inputRef={nameField}
         />
+
+        <Grid item xs={12}>
+          <InputLabel>Valores (em R$) para cada tamanho:</InputLabel>
+        </Grid>
+
         <TextField
-          label='Quantidade de sabores'
-          name='flavours'
-          value={pizzaEditable.flavours}
-          onChanged={handleChange}
-        /> */}
+          label='Pequena'
+          name='size-0'
+          xs={3}
+        />
+
+        <TextField
+          label='Média'
+          name='size-1'
+          xs={3}
+        />
+
+        <TextField
+          label='Grande'
+          name='size-2'
+          xs={3}
+        />
+
         <Grid item container justify='flex-end' spacing={2}>
           <Grid item>
             <Button
