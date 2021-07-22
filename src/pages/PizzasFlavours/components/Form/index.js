@@ -76,9 +76,8 @@ const FormRegisterFlavour = () => {
         <TextField
           label='Link para imagem desse sabor'
           name='image'
-          // value={pizzaEditable.name}
-          // onChanged={handleChange}
-          inputRef={nameField}
+        // value={pizzaEditable.name}
+        // onChanged={handleChange}
         />
 
         <Grid item xs={12}>
