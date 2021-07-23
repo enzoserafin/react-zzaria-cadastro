@@ -32,6 +32,31 @@ const useCollection = (collection) => {
     fetchColletionData()
   }, [collection, fetchColletionData])
 
+  const removePizzaSize = useCallback(async (id) => {
+    const pizzaSizeRef = db.collection('pizzasSizes').doc(id)
+
+    db.runTransaction(async (transaction) => {
+      const sizeDoc = await transaction.get(pizzaSizeRef)
+      if (!sizeDoc.exists) {
+        throw new Error('Esse tamanho não existe')
+      }
+      transaction.delete(pizzaSizeRef)
+
+      const allFlavours = await db.collection('pizzasFlavours').get()
+
+      allFlavours.forEach(flavour => {
+        const { [id]: sizeId, ...value } = flavour.data().value
+        const flavourRef = db.collection('pizzasFlavours').doc(flavour.id)
+        transaction.update(flavourRef, { value })
+      })
+    })
+      .then(() => {
+        console.log('Finalizou transaction com sucesso!')
+        fetchColletionData()
+      })
+      .catch((e) => console.log('deu erro na transaction', e))
+  }, [fetchColletionData])
+
   const edit = useCallback((id, data) => {
     return db.collection(collection).doc(id).set(data)
   }, [collection, fetchColletionData])
@@ -40,7 +65,7 @@ const useCollection = (collection) => {
     fetchColletionData()
   }, [pathname, fetchColletionData])
 
-  return { data, add, remove, edit }
+  return { data, add, remove, edit, removePizzaSize }
 }
 
 export default useCollection
