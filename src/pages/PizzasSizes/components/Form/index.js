@@ -71,7 +71,7 @@ const FormRegisterSize = () => {
           label='Nome para esse tamanho. Ex: Pequena'
           name='name'
           value={pizzaEditable.name}
-          onChanged={handleChange}
+          onChange={handleChange}
           inputRef={nameField}
         />
 
@@ -79,19 +79,19 @@ const FormRegisterSize = () => {
           label='Diâmetro da pizza em cm'
           name='size'
           value={pizzaEditable.size}
-          onChanged={handleChange}
+          onChange={handleChange}
         />
         <TextField
           label='Quantidade de fatias'
           name='slices'
           value={pizzaEditable.slices}
-          onChanged={handleChange}
+          onChange={handleChange}
         />
         <TextField
           label='Quantidade de sabores'
           name='flavours'
           value={pizzaEditable.flavours}
-          onChanged={handleChange}
+          onChange={handleChange}
         />
         <Grid item container justify='flex-end' spacing={2}>
           <Grid item>
