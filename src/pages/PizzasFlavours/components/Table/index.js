@@ -60,6 +60,13 @@ const TablePizzasFlavours = () => {
           </TableRow>
         </THead>
         <TableBody>
+          {pizzasFlavours?.length === 0 && (
+            <TableRow>
+              <TableCell>
+                Não existem sabores cadastrados.
+              </TableCell>
+            </TableRow>
+          )}
           {pizzasFlavours?.map(pizza => (
             <TableRow key={pizza.id}>
               <TableCell>

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Drawer as MaterialDrawer } from '@material-ui/core'
+import { Drawer as MaterialDrawer, Button as MaterialButton } from '@material-ui/core'
 
 export const Drawer = styled(MaterialDrawer).attrs({
   variant: 'permanent'
@@ -21,4 +21,14 @@ export const DrawerContent = styled.div`
 export const Content = styled.main`
   margin-left: ${({ theme }) => theme.extend.drawerWidth}px;
   padding: ${({ theme }) => theme.spacing(3)}px;
+`
+
+export const Button = styled(MaterialButton).attrs({
+  variant: 'contained'
+})`
+  && {
+    margin-left: ${({ theme }) => theme.spacing(2)}px;
+    margin-right: ${({ theme }) => theme.spacing(2)}px;
+    margin-top: ${({ theme }) => theme.spacing(2)}px;
+  }
 `

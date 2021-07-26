@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useCallback } from 'react'
 import { Switch, Route, Link, useLocation } from 'react-router-dom'
-import { Content, Drawer, DrawerContent } from './styles'
+import { Button, Content, Drawer, DrawerContent } from './styles'
 import {
   Divider,
   List,
@@ -8,7 +8,9 @@ import {
   ListItemText,
   Typography
 } from '@material-ui/core'
+import { ExitToApp } from '@material-ui/icons'
 import * as routes from '../../routes'
+import useAuth from '../../hooks/auth'
 
 const Orders = lazy(() => import('../Orders'))
 const PizzasSizes = lazy(() => import('../PizzasSizes'))
@@ -36,6 +38,7 @@ const menuItens = [
 const Main = () => {
   useScrollToTop()
   const { pathname } = useLocation()
+  const { logout } = useAuth()
 
   const getSelectedMenuItem = useCallback((item) => {
     return pathname === item.link ||
@@ -70,6 +73,18 @@ const Main = () => {
             </ListItem>
           ))}
         </List>
+
+        <Divider />
+
+        <Button
+          onClick={logout}
+          color='secondary'
+          startIcon={<ExitToApp />}
+        >
+          <Typography>
+            Sair
+          </Typography>
+        </Button>
 
       </Drawer>
 

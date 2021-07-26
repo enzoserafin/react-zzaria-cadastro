@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core'
-import { Container, GitHubButton } from './styles'
+import { Container, Description, GitHubButton, Title } from './styles'
 import useAuth from '../../hooks/auth'
 
 const Login = () => {
@@ -10,7 +10,8 @@ const Login = () => {
       <Grid container justify='center' spacing={5}>
 
         <Grid item>
-          <h1>Logo</h1>
+          <Title>React-zzaria</Title>
+          <Description>sistema de cadastros</Description>
         </Grid>
 
         <Grid item xs={12} container justify='center'>
